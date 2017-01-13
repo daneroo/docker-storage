@@ -3,11 +3,12 @@
 # set -e  # if we encounter an error, abort
 NUM_HOSTS=5
 
-# export MACHINE_DRIVER=amazonec2
+export MACHINE_DRIVER=amazonec2
 # export MACHINE_DRIVER=digitalocean
 export MACHINE_DRIVER=${MACHINE_DRIVER:-digitalocean}
 
 # AWS
+echo
 if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
   echo "Configuring for ${MACHINE_DRIVER}"
   # export MACHINE_DRIVER=amazonec2
@@ -16,6 +17,9 @@ if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
   # are read from ~/.aws/c.. by default
   # AWS_DEFAULT_REGION=...
   # AWS_INSTANCE_TYPE=t2.micro
+
+  # export AWS_AMI=ami-5f709f34  #default hvm-ssd
+  export AWS_AMI=ami-45709f2e  #hvm, default still borks (this is for us-east-1)
 fi
 
 # Digital Ocean
@@ -32,12 +36,14 @@ if [ "${MACHINE_DRIVER}" = "digitalocean" ]; then
   # export DIGITALOCEAN_SIZE=512mb
 fi
 
+echo
 echo "Creating ${NUM_HOSTS} hosts on provider: ${MACHINE_DRIVER}"
 echo "..."
 echo
 sleep 2
 
 echo "Creating $NUM_HOSTS hosts (in parallell)"
+echo
 for N in $(seq 1 $NUM_HOSTS); do
   docker-machine create node$N &
 done
