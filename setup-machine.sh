@@ -1,14 +1,42 @@
 #!/bin/bash
 
 # set -e  # if we encounter an error, abort
-
-export MACHINE_DRIVER=amazonec2
-# AWS_DEFAULT_REGION=...
-# AWS_INSTANCE_TYPE=t2.micro
-# export AWS_ACCESS_KEY_ID=AKI...
-# export AWS_SECRET_ACCESS_KEY=...
-
 NUM_HOSTS=5
+
+# export MACHINE_DRIVER=amazonec2
+# export MACHINE_DRIVER=digitalocean
+export MACHINE_DRIVER=${MACHINE_DRIVER:-digitalocean}
+
+# AWS
+if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
+  echo "Configuring for ${MACHINE_DRIVER}"
+  # export MACHINE_DRIVER=amazonec2
+  
+  # Credentials
+  # are read from ~/.aws/c.. by default
+  # AWS_DEFAULT_REGION=...
+  # AWS_INSTANCE_TYPE=t2.micro
+fi
+
+# Digital Ocean
+if [ "${MACHINE_DRIVER}" = "digitalocean" ]; then
+  echo "Configuring for ${MACHINE_DRIVER}"
+  # export MACHINE_DRIVER=digitalocean
+
+  # Credentials
+  # get the digital ocean token from the doctl config file
+  export DIGITALOCEAN_ACCESS_TOKEN=$(grep access-token ~/.config/doctl/config.yaml|cut -f 2 -d:| tr -d '[:space:]')
+  # export DIGITALOCEAN_IMAGE=ubuntu-16.04.x64
+  # export DIGITALOCEAN_REGION=nyc3 #default
+  export DIGITALOCEAN_REGION=nyc1
+  # export DIGITALOCEAN_SIZE=512mb
+fi
+
+echo "Creating ${NUM_HOSTS} hosts on provider: ${MACHINE_DRIVER}"
+echo "..."
+echo
+sleep 2
+
 echo "Creating $NUM_HOSTS hosts (in parallell)"
 for N in $(seq 1 $NUM_HOSTS); do
   docker-machine create node$N &
@@ -17,18 +45,22 @@ wait
 echo
 echo "Done creating hosts"
 
-sleep 5
+if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
+  sleep 5
 
-echo "Adding ubuntu user to docker group (in parallell)"
-for N in $(seq 1 $NUM_HOSTS); do
-  docker-machine ssh node$N sudo usermod -aG docker ubuntu &
-done
-wait
-echo
-echo "Done adding ubuntu user to docker group"
+  echo "Adding ubuntu user to docker group (in parallell)"
+  for N in $(seq 1 $NUM_HOSTS); do
+    docker-machine ssh node$N sudo usermod -aG docker ubuntu &
+  done
+  wait
+  echo
+  echo "Done adding ubuntu user to docker group"
 
-# optional check
-for N in $(seq 1 $NUM_HOSTS); do
-  echo Checking host: $node$N
-  docker-machine ssh node$N grep docker /etc/group
-done
+  # optional check
+  for N in $(seq 1 $NUM_HOSTS); do
+    echo Checking host: $node$N
+    docker-machine ssh node$N grep docker /etc/group
+  done
+
+fi
+
