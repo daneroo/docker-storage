@@ -1,17 +1,30 @@
-# Docker Storage
+# Docker Swarm scripts
 
-Notes for Docker Ottawa meetup 2017-01-25
+Use docker-machine (AWS ec2 / digital ocean) to provision swarm
 
-- The problem
-- The objective
-- Thw how
+_Based on Orchestration workshop/prepare-machine/_
 
-## TODO 
-- make bash opts for selecting AWS/DigitalOcean
+## Setup Host Machines
+on AWS takes 200s
+on DigitalOcean : 250s
+```bash
+./up.sh 
+```
+### Create the swarm
+- node 1-3 managers
+- node 4-5 workers
+```bash
+./swarmify.sh
+```
 
-## infra
+### Cleanup Host Machines
+```bash
+./down.sh
+```
 
-## operate
+
+## Usage
+swarm service example
 ```
 eval $(docker-machine env node1)
 docker node ls
@@ -26,32 +39,9 @@ docker service ps helloworld
 docker service rm helloworld
 ```
 
-
 ## requiremets
 Should make a script which checks...
 
 - aws cli: `brew install awscli`
 - docker-machine
 - doctl: `brew install doctl`
-
-## docker-machine (AWS ec2 / digital ocean)
-Based on Orchestration workshop/prepare-machine/
-
-### Setup Host Machines
-on AWS takes 200s
-on DigitalOcean : 250s
-
-```bash
-./setup-machine.sh 
-```
-### Create the swarm
-- node 1-3 managers
-- node 4-5 workers
-```bash
-./swarmify.sh
-```
-
-### Cleanup Host Machines
-```bash
-./teardown-machine.sh
-```
