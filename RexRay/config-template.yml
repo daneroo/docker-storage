@@ -1,0 +1,12 @@
+libstorage:
+  service: ebs
+  integration:
+    volume:
+      operations:
+        mount:
+          preempt: true
+          rootPath: /data
+ebs:
+  accessKey: ${AWS_ACCESS_KEY_ID}
+  secretKey: ${AWS_SECRET_ACCESS_KEY}
+  region: ${AWS_DEFAULT_REGION}
