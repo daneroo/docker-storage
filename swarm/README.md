@@ -29,7 +29,7 @@ swarm service example
 eval $(docker-machine env node1)
 docker node ls
 
-docker service create --replicas 1 --name helloworld alpine ping docker.com
+docker service create --replicas 1 --name helloworld alpine ping google.com
 docker service inspect --pretty helloworld
 docker service ps helloworld
 
@@ -37,6 +37,50 @@ docker service scale helloworld=5
 docker service ps helloworld
 
 docker service rm helloworld
+```
+
+## Monitoring/Visualizing
+### Show the [Swarm viz](https://github.com/ManoMarks/docker-swarm-visualizer).
+```bash
+docker service create \
+  --name=viz \
+  --publish=80:8080/tcp \
+  --constraint=node.role==manager \
+  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  manomarks/visualizer
+
+open "http://$(docker-machine ip node1)"
+```
+
+### CAdvisor
+```
+docker service create \
+  --mode global \
+  --mount type=bind,source=/,destination=/rootfs,ro=1 \
+  --mount type=bind,source=/var/run,destination=/var/run \
+  --mount type=bind,source=/sys,destination=/sys,ro=1 \
+  --mount type=bind,source=/var/lib/docker/,destination=/var/lib/docker,ro=1 \
+  --publish mode=host,target=8080,published=8080 \
+  --name=cadvisor \
+  google/cadvisor:latest
+```
+### New Relic instrumentation
+- See also `ir-runner, instapool`
+- Turn this into a service running on all hosts
+
+```bash
+NEWRELIC_KEY="......"
+docker run -d \
+--privileged=true --name nrsysmond \
+--pid=host \
+--net=host \
+-v /sys:/sys \
+-v /dev:/dev \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /var/log:/var/log:rw \
+-e NRSYSMOND_license_key=${NEWRELIC_KEY} \
+-e NRSYSMOND_logfile=/var/log/nrsysmond.log \
+newrelic/nrsysmond:latest
 ```
 
 ## requiremets

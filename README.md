@@ -8,6 +8,8 @@ Notes for Docker Ottawa meetup 2017-01-25
 
 ## TODO 
 - [RexRay](https://github.com/codedellemc/labs/tree/master/demo-persistence-with-postgres-docker)
+- app in GO
+- [Infinit and Docker](https://media-glass.es/playing-with-infinit-docker-651236e68cf#.viifcrula)
 - [Flocker](https://flocker-docs.clusterhq.com/en/latest/docker-integration/manual-install.html)
 - [Tectonic on CoreOS](https://tectonic.com/enterprise/docs/latest/install/aws/index.html)
 - [Helm](https://github.com/kubernetes/helm)
@@ -29,35 +31,4 @@ Check the `swarm/` directory
 ## RexRay
 See `RexRay/`
 
-## Swarm Viz
-Show the [Swarm viz](https://github.com/ManoMarks/docker-swarm-visualizer).
-```bash
-docker service create \
-  --name=viz \
-  --publish=80:8080/tcp \
-  --constraint=node.role==manager \
-  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-  manomarks/visualizer
-
-open "http://$(docker-machine ip node1)"
-```
-
-## New Relic instrumentation
-- See also `ir-runner, instapool`
-- Turn this into a service running on all hosts
-
-```bash
-NEWRELIC_KEY="......"
-docker run -d \
---privileged=true --name nrsysmond \
---pid=host \
---net=host \
--v /sys:/sys \
--v /dev:/dev \
--v /var/run/docker.sock:/var/run/docker.sock \
--v /var/log:/var/log:rw \
--e NRSYSMOND_license_key=${NEWRELIC_KEY} \
--e NRSYSMOND_logfile=/var/log/nrsysmond.log \
-newrelic/nrsysmond:latest
-```
 ## K8s (kops/minikube)

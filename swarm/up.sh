@@ -3,9 +3,9 @@
 # set -e  # if we encounter an error, abort
 NUM_HOSTS=5
 
-export MACHINE_DRIVER=amazonec2
+# export MACHINE_DRIVER=amazonec2 # default
 # export MACHINE_DRIVER=digitalocean
-export MACHINE_DRIVER=${MACHINE_DRIVER:-digitalocean}
+export MACHINE_DRIVER=${MACHINE_DRIVER:-amazonec2}
 
 # AWS
 echo
@@ -30,7 +30,7 @@ if [ "${MACHINE_DRIVER}" = "digitalocean" ]; then
   # Credentials
   # get the digital ocean token from the doctl config file
   export DIGITALOCEAN_ACCESS_TOKEN=$(grep access-token ~/.config/doctl/config.yaml|cut -f 2 -d:| tr -d '[:space:]')
-  # export DIGITALOCEAN_IMAGE=ubuntu-16.04.x64
+  # export DIGITALOCEAN_IMAGE=ubuntu-16-04-x64
   # export DIGITALOCEAN_REGION=nyc3 #default
   export DIGITALOCEAN_REGION=nyc1
   # export DIGITALOCEAN_SIZE=512mb
