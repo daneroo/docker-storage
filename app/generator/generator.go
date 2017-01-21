@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -18,6 +19,7 @@ func main() {
 }
 
 var (
+	rate             = rand.Intn(5) + 8
 	generatorCounter = prometheus.NewCounter(prometheus.CounterOpts{
 		Namespace: "dksto",
 		Name:      "generator_count",
@@ -34,9 +36,10 @@ func init() {
 func tick() {
 	ticker := time.NewTicker(time.Millisecond * 1000)
 	for t := range ticker.C {
-		generatorCounter.Add(10)
+		generatorCounter.Add(float64(rate))
 		log.WithFields(log.Fields{
 			"stamp": t.Round(time.Millisecond * 10),
+			"rate":  rate,
 		}).Info("Tick")
 	}
 }

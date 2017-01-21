@@ -40,16 +40,20 @@ docker service rm helloworld
 ```
 
 ## Monitoring/Visualizing
+
+See [this article for grafana/prometheus in swarm mode services](https://grafana.net/dashboards/609)
+
 ### Show the [Swarm viz](https://github.com/ManoMarks/docker-swarm-visualizer).
 ```bash
+eval $(docker-machine env node1)
 docker service create \
   --name=viz \
-  --publish=80:8080/tcp \
+  --publish=9999:8080/tcp \
   --constraint=node.role==manager \
   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
   manomarks/visualizer
 
-open "http://$(docker-machine ip node1)"
+open "http://$(docker-machine ip node1):9999"
 ```
 
 ### CAdvisor

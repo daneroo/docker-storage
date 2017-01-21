@@ -1,7 +1,9 @@
-version: '2'
+version: '3'
 services:
   generator:
     image: daneroo/dksto_generator
+    deploy:
+      replicas: 4
     # build: generator
 
     links:
@@ -28,7 +30,9 @@ services:
       - 5432
 
   cockroach:
-    image: cockroachdb/cockroach
+    image: cockroachdb/cockroach:beta-20170112
+    deploy:
+      replicas: 1
     # command: start --stores=hdd=/data --gossip=self:// --certs=/data --insecure
     command: start --logtostderr --insecure --http-host 0.0.0.0
     ports:
