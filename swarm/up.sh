@@ -17,10 +17,12 @@ if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
   # are read from ~/.aws/c.. by default
   # AWS_DEFAULT_REGION=...
   # AWS_INSTANCE_TYPE=t2.micro
-  AWS_INSTANCE_TYPE=t2.small
+  export AWS_INSTANCE_TYPE=t2.small
 
-  # export AWS_AMI=ami-5f709f34  #default hvm-ssd
-  export AWS_AMI=ami-45709f2e  #hvm, default still borks (this is for us-east-1)
+  # default works again!
+  # List of default AMI is here: https://docs.docker.com/machine/drivers/aws/#/default-amis
+  # export AWS_AMI=ami-5f709f34  #default hvm-ssd does not work
+  # export AWS_AMI=ami-45709f2e  #hvm, works while default still borks (this is for us-east-1)
 fi
 
 # Digital Ocean

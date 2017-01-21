@@ -9,6 +9,7 @@ Notes for Docker Ottawa meetup 2017-01-25
 ## TODO 
 - [RexRay](https://github.com/codedellemc/labs/tree/master/demo-persistence-with-postgres-docker)
 - app in GO
+- [Crate.io demo](https://crate.io/a/orchestrating-a-sql-database-cluster-with-docker/)
 - [Infinit and Docker](https://media-glass.es/playing-with-infinit-docker-651236e68cf#.viifcrula)
 - [Flocker](https://flocker-docs.clusterhq.com/en/latest/docker-integration/manual-install.html)
 - [Tectonic on CoreOS](https://tectonic.com/enterprise/docs/latest/install/aws/index.html)
@@ -34,3 +35,5 @@ See `RexRay/`
 ## Docker for AWS
 
 ## K8s (kops/minikube)
+
+## Crate.io

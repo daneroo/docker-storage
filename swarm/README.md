@@ -7,6 +7,7 @@ _Based on Orchestration workshop/prepare-machine/_
 ## Setup Host Machines
 on AWS takes 200s
 on DigitalOcean : 250s
+
 ```bash
 ./up.sh 
 ```
@@ -15,6 +16,10 @@ on DigitalOcean : 250s
 - node 4-5 workers
 ```bash
 ./swarmify.sh
+
+# -- check
+eval $(docker-machine env node1)
+docker node ls
 ```
 
 ### Cleanup Host Machines
