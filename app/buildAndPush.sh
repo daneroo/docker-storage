@@ -11,7 +11,7 @@ PFX=dksto
 for ima in ${IMAGES}; do
   IMAGENAME=${REGISTRY}/${PFX}_${ima}
   docker build -t ${IMAGENAME} ${ima}
-  # docker push ${IMAGENAME}
+  docker push ${IMAGENAME}
   echo Built and pushed : docker build -t ${IMAGENAME} ${ima}
 done
 echo Built and pushed: ${IMAGES}
