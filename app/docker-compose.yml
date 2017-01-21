@@ -1,0 +1,66 @@
+version: '2'
+services:
+  generator:
+    image: daneroo/dksto_generator
+    # build: generator
+
+    links:
+      - postgres
+      - cockroach
+    expose:
+      - 80  # should match $PORT below, and prometheus config
+    environment:
+      TOTAL_RECORDS: 1e6
+      STORE: all
+      PORT: 80 # this is for prometheus
+      POSTGRES_HOST: postgres
+      COCKROACH_HOST: cockroach
+    
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_DB=l4pg
+      - POSTGRES_USER=l4user
+      - POSTGRES_PASSWORD=l4seKret
+    # volumes:
+    #  - ./data/postgresql:/var/lib/postgresql/data
+    expose:
+      - 5432
+
+  cockroach:
+    image: cockroachdb/cockroach
+    # command: start --stores=hdd=/data --gossip=self:// --certs=/data --insecure
+    command: start --logtostderr --insecure --http-host 0.0.0.0
+    ports:
+      - "8080:8080"
+    expose:
+      - 26257
+
+  # log in  with admin/admin : set with ENV:GF_SECURITY_ADMIN_USER|PASSWORD
+  grafana:
+    image: daneroo/dksto_grafana
+    # below (_image/build/volumes) is for live editing of the dashboards
+    # image: grafana/grafana
+    # build: grafana
+    # volumes:
+    #   - ./grafana/grafana.db:/var/lib/grafana/grafana.db
+  
+    links:
+      - prom
+    ports:
+      - 3000:3000
+    # restart: unless-stopped
+
+  prom:
+    image: daneroo/dksto_prom
+    # below (_image/build/volumes) is for live editing of prometheus config
+    # image: prom/prometheus
+    # build: prom
+    # volumes:
+    #   - ./prom/prometheus.yml:/etc/prometheus/prometheus.yml
+
+    links:
+      - generator
+    ports:
+      - 9090:9090
+    # restart: unless-stopped

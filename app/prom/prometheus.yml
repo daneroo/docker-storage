@@ -1,0 +1,47 @@
+# Prometheus config
+global:
+  scrape_interval:     5s
+  evaluation_interval: 30s
+  # scrape_timeout is set to the global default (10s).
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'generator'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 1s
+    # scrape_timeout: 10s
+
+    # <target_group>
+    # hostname is from docker-compose label
+    # target_groups:
+    #   - targets: ['runner:8000']
+
+    dns_sd_configs:
+      - names: [ generator ]
+        refresh_interval: 5s
+        type: 'A'
+        port: 80
+
+    static_configs:
+      - targets: 
+        - '192.168.0.1:80'
+        - '192.168.0.2:80'
+        - '192.168.0.3:80'
+        - '192.168.0.:480'
+        - '192.168.0.5:80'
+        - '192.168.0.6:80'
+        - '192.168.0.7:80'
+        - '192.168.0.8:80'
+        - '192.168.0.9:80'
+        - '192.168.0.10:80'
+        - '192.168.0.11:80'
+        - '192.168.0.14:80'
+        - '192.168.0.15:80'
+        - '192.168.0.16:80'
+        - '192.168.0.17:80'
+        - '192.168.0.18:80'
+        - '192.168.0.19:80'
+        - '192.168.0.20:80'
+        - '192.168.0.21:80'
+        - '192.168.0.22:80'
