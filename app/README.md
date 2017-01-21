@@ -17,6 +17,7 @@ docker stack deploy -c docker-compose.yml  app
 open "http://$(docker-machine ip node1):9999"
 
 # -- grafana
+open "http://$(docker-machine ip node1):3000"
 open http://0.0.0.0:3000/
 # --- prometheus
 open http://0.0.0.0:9090/

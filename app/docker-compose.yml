@@ -6,11 +6,11 @@ services:
       replicas: 4
     # build: generator
 
-    links:
-      - postgres
-      - cockroach
-    expose:
-      - 80  # should match $PORT below, and prometheus config
+    # links:
+    #   - postgres
+    #   - cockroach
+    # expose:
+    #   - 80  # should match $PORT below, and prometheus config
     environment:
       TOTAL_RECORDS: 1e6
       STORE: all
@@ -26,8 +26,8 @@ services:
       - POSTGRES_PASSWORD=l4seKret
     # volumes:
     #  - ./data/postgresql:/var/lib/postgresql/data
-    expose:
-      - 5432
+    # expose:
+    #   - 5432
 
   cockroach:
     image: cockroachdb/cockroach:beta-20170112
@@ -37,8 +37,8 @@ services:
     command: start --logtostderr --insecure --http-host 0.0.0.0
     ports:
       - "8080:8080"
-    expose:
-      - 26257
+    # expose:
+    #   - 26257
 
   # log in  with admin/admin : set with ENV:GF_SECURITY_ADMIN_USER|PASSWORD
   grafana:
@@ -49,8 +49,8 @@ services:
     # volumes:
     #   - ./grafana/grafana.db:/var/lib/grafana/grafana.db
   
-    links:
-      - prom
+    # links:
+    #   - prom
     ports:
       - 3000:3000
     # restart: unless-stopped
@@ -63,8 +63,8 @@ services:
     # volumes:
     #   - ./prom/prometheus.yml:/etc/prometheus/prometheus.yml
 
-    links:
-      - generator
+    # links:
+    #   - generator
     ports:
       - 9090:9090
     # restart: unless-stopped

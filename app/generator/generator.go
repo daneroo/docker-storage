@@ -19,7 +19,6 @@ func main() {
 }
 
 var (
-	rate             = rand.Intn(5) + 8
 	generatorCounter = prometheus.NewCounter(prometheus.CounterOpts{
 		Namespace: "dksto",
 		Name:      "generator_count",
@@ -29,11 +28,14 @@ var (
 )
 
 func init() {
+	// Seed for rand
+	rand.Seed(time.Now().UTC().UnixNano())
 	// Metrics have to be registered to be exposed:
 	prometheus.MustRegister(generatorCounter)
 }
 
 func tick() {
+	rate := rand.Intn(10) + 5 // 5-15
 	ticker := time.NewTicker(time.Millisecond * 1000)
 	for t := range ticker.C {
 		generatorCounter.Add(float64(rate))

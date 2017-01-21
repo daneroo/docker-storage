@@ -31,4 +31,13 @@ Check the `swarm/` directory
 ## RexRay
 See `RexRay/`
 
+## Docker for AWS
+- [Docker for AWS](https://docs.docker.com/docker-for-aws/)
+- [Launch Docker for AWS](https://docs.docker.com/docker-for-aws/release-notes/)
+
+ssh into one of the managers:
+```
+ssh -i ~/.ssh/cdb-dan.pem docker@54.144.4.109
+```
+
 ## K8s (kops/minikube)
