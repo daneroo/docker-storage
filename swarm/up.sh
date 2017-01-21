@@ -17,6 +17,7 @@ if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
   # are read from ~/.aws/c.. by default
   # AWS_DEFAULT_REGION=...
   # AWS_INSTANCE_TYPE=t2.micro
+  AWS_INSTANCE_TYPE=t2.small
 
   # export AWS_AMI=ami-5f709f34  #default hvm-ssd
   export AWS_AMI=ami-45709f2e  #hvm, default still borks (this is for us-east-1)

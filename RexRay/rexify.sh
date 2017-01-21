@@ -1,23 +1,49 @@
 #!/bin/bash
 
 # set -e  # if we encounter an error, abort
-NUM_HOSTS=1
+NUM_HOSTS=5
 
 export MACHINE_DRIVER=amazonec2
 
+# This is called at end of script
 function main(){
   loadAndcheckEnv
   makeRexrayConfig
 
+  rexify
   # docker-machine ssh aws01 "echo whoami | sudo sh" # root
-  docker-machine ssh aws01 "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
+  # docker-machine ssh aws01 "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
 
-  echo "${REXRAY_CONFIG}" | docker-machine ssh aws01 "sudo tee /etc/rexray/config.yml" >/dev/null
+  # echo "${REXRAY_CONFIG}" | docker-machine ssh aws01 "sudo tee /etc/rexray/config.yml" >/dev/null
 
-  docker-machine ssh aws01 "sudo service rexray start"
-
+  # docker-machine ssh aws01 "sudo service rexray start"
     
-  exit 
+}
+
+function rexify(){
+  if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
+    echo
+    echo "Installing RexRay plugin (${MACHINE_DRIVER})"
+    for N in $(seq 1 $NUM_HOSTS); do
+      HOST=node$N
+      echo "Installing on ${HOST} ..."
+
+      # docker-machine ssh ${HOST} "echo whoami | sudo sh" # root
+
+      docker-machine ssh ${HOST} "curl -sSL https://dl.bintray.com/emccode/rexray/install | sh -s -- stable"
+      echo "  plugin installed on ${HOST}"
+      echo "${REXRAY_CONFIG}" | docker-machine ssh ${HOST} "sudo tee /etc/rexray/config.yml" >/dev/null
+      echo "  plugin configured on ${HOST}"
+      docker-machine ssh ${HOST} "sudo service rexray start"
+      echo "  service started on ${HOST}"
+
+    done
+    echo
+    echo "Done Installing RexRay plugin"
+  else
+    echo
+    echo "Cannot install RexRay plugin on ${MACHINE_DRIVER}"
+  fi
 }
 
 function badEnv(){
@@ -69,49 +95,3 @@ END_HEREDOC
 
 # Call main, after all functions are defined
 main
-
-exit 1
-
-
-# AWS
-echo
-if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
-  echo "Configuring for ${MACHINE_DRIVER}"
-  # export MACHINE_DRIVER=amazonec2
-  
-  # Credentials
-  # are read from ~/.aws/c.. by default
-  # AWS_DEFAULT_REGION=...
-  # AWS_INSTANCE_TYPE=t2.micro
-
-  # export AWS_AMI=ami-5f709f34  #default hvm-ssd
-  export AWS_AMI=ami-45709f2e  #hvm, default still borks (this is for us-east-1)
-fi
-
-echo
-echo "Creating ${NUM_HOSTS} hosts on provider: ${MACHINE_DRIVER}"
-echo "..."
-echo
-sleep 2
-
-echo "Creating $NUM_HOSTS hosts (in parallell)"
-echo
-for N in $(seq 1 $NUM_HOSTS); do
-  docker-machine create node$N &
-done
-wait
-echo
-echo "Done creating hosts"
-
-if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
-  sleep 5
-
-  echo "Adding ubuntu user to docker group (in parallell)"
-  for N in $(seq 1 $NUM_HOSTS); do
-    docker-machine ssh node$N sudo usermod -aG docker ubuntu &
-  done
-  wait
-  echo
-  echo "Done adding ubuntu user to docker group"
-fi
-

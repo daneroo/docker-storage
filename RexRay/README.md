@@ -36,6 +36,8 @@ service rexray start
 Make a vloume
 ```bash
 docker volume create -d rexray --name pg_data --opt=size=10
+docker volume create -d rexray --name pg_data --opt=size=10 --opt=type=gp2
+docker volume create -d rexray --name pg_data --opt=size=10 --opt=type=io1 --opt=iops=150
 # or
 sudo rexray volume create --volumename pg_data --size=10
 
