@@ -1,5 +1,5 @@
-hash: 75cded23aaebec5757f77640f4adf51e625f0dd9a27a2c4f46d16ff3f2d68b0e
-updated: 2017-01-21T01:08:59.372130227-05:00
+hash: 1174d20371cfa91fabb05f3350619f021c563039e4a4a22dc16e86acf6722836
+updated: 2017-01-24T18:15:00.675858684-05:00
 imports:
 - name: github.com/beorn7/perks
   version: 4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9
@@ -9,6 +9,16 @@ imports:
   version: 8ee79997227bf9b34611aee7946ae64735e6fd93
   subpackages:
   - proto
+- name: github.com/jinzhu/gorm
+  version: 5174cc5c242a728b435ea2be8a2f7f998e15429b
+  subpackages:
+  - dialects/sqlite
+- name: github.com/jinzhu/inflection
+  version: 1c35d901db3da928c72a72d8458480cc9ade058f
+- name: github.com/lib/pq
+  version: 67c3f2a8884c9b1aac5503c8d42ae4f73a93511c
+- name: github.com/mattn/go-sqlite3
+  version: 7ed900a7c4cc22315a007cc49821cce3baa7be0f
 - name: github.com/matttproud/golang_protobuf_extensions
   version: c12348ce28de40eed0136aa2b644d0ee0650e56c
   subpackages:
@@ -32,6 +42,10 @@ imports:
   version: fcdb11ccb4389efb1b210b7ffb623ab71c5fdd60
 - name: github.com/Sirupsen/logrus
   version: d26492970760ca5d33129d2d799e34be5c4782eb
+- name: golang.org/x/net
+  version: f2499483f923065a842d38eb4c7f1927e6fc6e6d
+  subpackages:
+  - context
 - name: golang.org/x/sys
   version: d75a52659825e75fff6158388dddc6a5b04f9ba5
   subpackages:

@@ -12,18 +12,20 @@ services:
     # expose:
     #   - 80  # should match $PORT below, and prometheus config
     environment:
-      TOTAL_RECORDS: 1e6
-      STORE: all
+      # TOTAL_RECORDS: 1e6
+      # STORE: all
+      # DB_CONNECT: host=postgres dbname=dksto sslmode=disable user=dkstouser password=dkstoseKret
+      DB_CONNECT: host=cockroach port=26257 dbname=dksto sslmode=disable user=dkstouser password=dkstoseKret
       PORT: 80 # this is for prometheus
-      POSTGRES_HOST: postgres
-      COCKROACH_HOST: cockroach
+      # POSTGRES_HOST: postgres
+      # COCKROACH_HOST: cockroach
     
   postgres:
     image: postgres
     environment:
-      - POSTGRES_DB=l4pg
-      - POSTGRES_USER=l4user
-      - POSTGRES_PASSWORD=l4seKret
+      - POSTGRES_DB=dksto
+      - POSTGRES_USER=dkstouser
+      - POSTGRES_PASSWORD=dkstoseKret
     # volumes:
     #  - ./data/postgresql:/var/lib/postgresql/data
     # expose:
@@ -41,30 +43,30 @@ services:
     #   - 26257
 
   # log in  with admin/admin : set with ENV:GF_SECURITY_ADMIN_USER|PASSWORD
-  grafana:
-    image: daneroo/dksto_grafana
-    # below (_image/build/volumes) is for live editing of the dashboards
-    # image: grafana/grafana
-    # build: grafana
-    # volumes:
-    #   - ./grafana/grafana.db:/var/lib/grafana/grafana.db
+  # grafana:
+  #   image: daneroo/dksto_grafana
+  #   # below (_image/build/volumes) is for live editing of the dashboards
+  #   # image: grafana/grafana
+  #   # build: grafana
+  #   # volumes:
+  #   #   - ./grafana/grafana.db:/var/lib/grafana/grafana.db
   
-    # links:
-    #   - prom
-    ports:
-      - 3000:3000
-    # restart: unless-stopped
+  #   # links:
+  #   #   - prom
+  #   ports:
+  #     - 3000:3000
+  #   # restart: unless-stopped
 
-  prom:
-    image: daneroo/dksto_prom
-    # below (_image/build/volumes) is for live editing of prometheus config
-    # image: prom/prometheus
-    # build: prom
-    # volumes:
-    #   - ./prom/prometheus.yml:/etc/prometheus/prometheus.yml
+  # prom:
+  #   image: daneroo/dksto_prom
+  #   # below (_image/build/volumes) is for live editing of prometheus config
+  #   # image: prom/prometheus
+  #   # build: prom
+  #   # volumes:
+  #   #   - ./prom/prometheus.yml:/etc/prometheus/prometheus.yml
 
-    # links:
-    #   - generator
-    ports:
-      - 9090:9090
-    # restart: unless-stopped
+  #   # links:
+  #   #   - generator
+  #   ports:
+  #     - 9090:9090
+  #   # restart: unless-stopped

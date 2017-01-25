@@ -92,6 +92,7 @@ Dashboard addon:
 kubectl create -f https://raw.githubusercontent.com/kubernetes/kops/master/addons/kubernetes-dashboard/v1.5.0.yaml
 kubectl proxy
 open http://127.0.0.1:8001/api
+open 'http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/admin?namespace=default'
 ```
 
 

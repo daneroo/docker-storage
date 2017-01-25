@@ -25,6 +25,16 @@ open "http://$(docker-machine ip node2):9090"
 # -- cockroach 8080
 open http://0.0.0.0:8080/
 open "http://$(docker-machine ip node2):8080"
+```
+
+## stadalond databases
+```
+docker run --rm -e POSTGRES_DB=dksto -e POSTGRES_USER=dkstouser -e POSTGRES_PASSWORD=dkstoseKret -p 5432:5432 postgres
+docker run --rm -p 26257:5432 cockroachdb/cockroach:beta-20170112 start --logtostderr --insecure --http-host 0.0.0.0
+
+/cockroach/cockroach sql -e 'create database if not exists dksto'
+/cockroach/cockroach user set dkstouser
+/cockroach/cockroach sql -e 'grant all on database dksto to dkstouser'
 
 ```
 ## References
