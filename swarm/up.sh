@@ -16,7 +16,7 @@ if [ "${MACHINE_DRIVER}" = "amazonec2" ]; then
   # Credentials
   # are read from ~/.aws/c.. by default
   # AWS_DEFAULT_REGION=...
-  # AWS_INSTANCE_TYPE=t2.micro
+  # export AWS_INSTANCE_TYPE=t2.micro
   export AWS_INSTANCE_TYPE=t2.small
 
   # default works again!
