@@ -123,10 +123,10 @@ func insert() {
 		log.Fatal("failed to insert...", err)
 	}
 
-	log.WithFields(log.Fields{
-		"stamp":   message.Stamp,
-		"message": message.Message,
-	}).Info("insert")
+	// log.WithFields(log.Fields{
+	// 	"stamp":   message.Stamp,
+	// 	"message": message.Message,
+	// }).Info("insert")
 
 	// Read
 	// var message Message

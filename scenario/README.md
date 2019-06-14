@@ -10,8 +10,7 @@ docker service create \
   --publish=9999:8080/tcp \
   --constraint=node.role==manager \
   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-  manomarks/visualizer
-
+  dockersamples/visualizer
 open "http://$(docker-machine ip node1):9999"
 
 # -- scaling compute
